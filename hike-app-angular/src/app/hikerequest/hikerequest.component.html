@@ -1,0 +1,87 @@
+<app-nav></app-nav>
+
+<div class="level">
+    <div class="level-left">
+        <h5 class="title is-5">Request Hikes</h5>
+    </div>
+    <div class="level-right">
+        <button class="button is-small is-success" (click)="onAddBtnClick()">Add</button>
+    </div>
+</div>
+<app-table [data]="hikeRequest" [columns]="columns" (editBtnClick)="onEditBtnClick($event)"
+    (deleteBtnClick)="onDeleteBtnClick($event)"></app-table>
+
+<div class="modal" [ngClass]="{'is-active': formModalActive}">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <form class="box" [formGroup]="hikeRequestFormGroup">
+            <div class="field">
+                <label class="label is-small">Hike</label>
+                <div class="select">
+                    <select   [formControlName]="hikeRequestFormControlKeys.hikeName">
+                        <option value="">Choose Hike</option>
+                        <option [value]="item.id" *ngFor="let item of requestableHikes" >
+                            {{item.name}}
+                        </option>
+                    </select>
+              
+
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label is-small">Employee Inum</label>
+                <div class="control">
+                    <input class="input is-small" type="text" placeholder="Employee Inumber"
+                        [formControlName]="hikeRequestFormControlKeys.employeeIno" />
+                </div>
+                <!-- employee number aaune banesi delete it -->                   
+               <p class="text-danger" style="color: red; font-size: small;"
+                    *ngIf="!hikeRequestFormGroup.get('employeeIno').valid && !hikeRequestFormGroup.get('employeeIno').pristine">
+                    must start with i and have 7 characters
+                </p>
+            </div>
+
+            <div class="field is-grouped">
+                <div class="control">
+                    <button type="button"[disabled]="!hikeRequestFormGroup.valid" class="button is-small is-link" (click)="onFormSubmitBtnClick()">
+                        Submit
+                    </button>
+                </div>
+                <div class="control">
+                    <button type="button" class="button is-small is-link is-light" (click)="onFormCancelBtnClick()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+
+<div class="modal" [ngClass]="{'is-active': deleteModalActive}">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h5 class="title is-5">Are you sure want to delete?</h5>
+            <div class="buttons">
+                <button type="button" class="button is-small is-link" (click)="onDeleteConfirm()">Yes</button>
+                <button type="button" class="button is-small is-link is-light" (click)="onDeleteReject()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" [ngClass]="{'is-active': submitModalActive}">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+        <div class="box">
+            <h5 class="title is-5">!!!!!!Hike has expired already!!!!!!</h5>
+            <div class="buttons">
+                <button type="button" class="button is-small is-link" (click)="onOk()">Ok</button>
+                <!-- <button type="button" class="button is-small is-link is-light" (click)="onDeleteReject()">No</button> -->
+            </div>
+        </div>
+    </div>
+</div>
